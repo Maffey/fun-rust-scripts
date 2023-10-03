@@ -1,8 +1,8 @@
 pub fn run_calculate_sequence_easy() {
     // TODO Make release when ready, also for sports
     // TODO add tests for sports
-    let result1 = calculate_nth_element_arithmetic(1.0, 2.0, 3);
-    let result2 = calculate_nth_element_geometric(1.0, 2.0, 3);
+    let _result1 = calculate_nth_element_arithmetic(1.0, 2.0, 3);
+    let _result2 = calculate_nth_element_geometric(1.0, 2.0, 3);
 }
 
 // def calc_nth_element_arth(a1, r, n):
