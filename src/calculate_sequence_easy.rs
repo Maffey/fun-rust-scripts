@@ -15,8 +15,8 @@ pub fn run_calculate_sequence_easy() {
             .expect("Failed to read line!");
 
         match sequence_type.trim() {
-            "arth" => process_arithmetic_sequence(get_sequence_elements()),
-            "geo" => process_geometic_sequence(get_sequence_elements()),
+            "arth" => process_arithmetic_sequence( parse_user_number_input("Please provide the first element: "), parse_user_number_input("Please provide the second element: ")),
+            "geo" => process_geometic_sequence( parse_user_number_input("Please provide the first element: "), parse_user_number_input("Please provide the second element: ")),
             "quit" => exit(0),
             _ => println!("Incorrect command. Try again."),
         }
@@ -43,14 +43,7 @@ fn parse_user_number_input(input_prompt: &str) -> f32 {
     }
 }
 
-fn get_sequence_elements() -> (f32, f32) {
-    let first_element = parse_user_number_input("Please provide the first element: ");
-    let second_element = parse_user_number_input("Please provide the second element: ");
-    (first_element, second_element)
-}
-
-fn process_arithmetic_sequence(first_two_elements: (f32, f32)) {
-    let (a1, a2) = first_two_elements;
+fn process_arithmetic_sequence(a1: f32, a2: f32) {
     let difference = a2 - a1;
     println!("{ELEMENT_OF_SEQUENCE_PROMPT}");
     let mut element_to_calculate = String::new();
@@ -72,8 +65,7 @@ fn process_arithmetic_sequence(first_two_elements: (f32, f32)) {
     println!("{PRESENT_RESULT}{result}")
 }
 
-fn process_geometic_sequence(first_two_elements: (f32, f32)) {
-    let (a1, a2) = first_two_elements;
+fn process_geometic_sequence(a1: f32, a2: f32) {
     // difference = second_element / first_element
     // print(f"Standard formula: An = {first_element} * {difference}^(n-1)")
     // nth = int(input("Which element of the sequence do you want to calculate?"))
