@@ -15,8 +15,14 @@ pub fn run_calculate_sequence_easy() {
             .expect("Failed to read line!");
 
         match sequence_type.trim() {
-            "arth" => process_arithmetic_sequence( parse_user_number_input("Please provide the first element: "), parse_user_number_input("Please provide the second element: ")),
-            "geo" => process_geometic_sequence( parse_user_number_input("Please provide the first element: "), parse_user_number_input("Please provide the second element: ")),
+            "arth" => process_arithmetic_sequence(
+                parse_user_number_input("Please provide the first element: "),
+                parse_user_number_input("Please provide the second element: "),
+            ),
+            "geo" => process_geometic_sequence(
+                parse_user_number_input("Please provide the first element: "),
+                parse_user_number_input("Please provide the second element: "),
+            ),
             "quit" => exit(0),
             _ => println!("Incorrect command. Try again."),
         }
@@ -36,8 +42,8 @@ fn parse_user_number_input(input_prompt: &str) -> f32 {
             Ok(number) => number,
             Err(_) => {
                 println!("Not a number. Try again.");
-                continue
-            },
+                continue;
+            }
         };
         return variable;
     }
@@ -57,7 +63,7 @@ fn process_arithmetic_sequence(a1: f32, a2: f32) {
             // todo meh solution
             println!("Not a number. Calculating 10th element by default.");
             10
-        },
+        }
     };
 
     println!("Standard formula: An = {a1} * {difference}^(n-1)");
