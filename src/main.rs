@@ -4,6 +4,8 @@ use std::str::FromStr;
 
 mod calculate_sequence_easy;
 
+// TODO show user programs that can be run.
+
 #[derive(Debug, PartialEq)]
 enum Program {
     // TODO: Implement Display instead of debug.
