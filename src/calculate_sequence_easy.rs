@@ -12,7 +12,7 @@ const INCORRECT_COMMAND_ERROR: &str = "Incorrect command. Try again.";
 
 #[derive(PartialEq)]
 enum Option {
-    Arthmetic,
+    Arithmetic,
     Geometric,
     Quit,
 }
@@ -23,7 +23,7 @@ impl FromStr for Option {
 
     fn from_str(option: &str) -> Result<Option, Self::Err> {
         match option {
-            ARITHMETIC_OPTION => Ok(Option::Arthmetic),
+            ARITHMETIC_OPTION => Ok(Option::Arithmetic),
             GEOMETRIC_OPTION => Ok(Option::Geometric),
             "quit" => Ok(Option::Quit),
             "q" => Ok(Option::Quit),
@@ -57,7 +57,7 @@ pub fn run_calculate_sequence_easy() {
         let element_to_calculate: u32 = get_parsed_user_input(ELEMENT_OF_SEQUENCE_PROMPT);
 
         match sequence_type {
-            Option::Arthmetic => process_arithmetic_sequence(a1, a2 - a1, element_to_calculate),
+            Option::Arithmetic => process_arithmetic_sequence(a1, a2 - a1, element_to_calculate),
             Option::Geometric => process_geometric_sequence(a1, a2 / a1, element_to_calculate),
             _ => println!("{INCORRECT_COMMAND_ERROR}"),
         }
