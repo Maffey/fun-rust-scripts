@@ -33,8 +33,6 @@ impl FromStr for Option {
 }
 
 pub fn run_calculate_sequence_easy() {
-    // TODO add tests for sports
-    // TODO Make release when ready, also for sports
     loop {
         println!("Please enter type of sequence. ('{GEOMETRIC_OPTION}' or '{ARITHMETIC_OPTION}' or 'quit'): ");
         let mut sequence_type: String = String::new();
@@ -104,4 +102,40 @@ fn calculate_nth_element_arithmetic(a1: f32, r: f32, n: u32) -> f32 {
 
 fn calculate_nth_element_geometric(a1: f32, q: f32, n: u32) -> f32 {
     a1 * q.powf((n as f32) - 1.0)
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::calculate_sequence_easy::*;
+    use rstest::rstest;
+
+    #[rstest]
+    #[case(0.0, 0.0, 0, 0.0)]
+    #[case(1.0, 2.0, 2, 3.0)]
+    #[case(5.0, 10.0, 20, 195.0)]
+    fn test_calculate_nth_element_arithmetic(
+        #[case] a1: f32,
+        #[case] r: f32,
+        #[case] n: u32,
+        #[case] expected_result: f32,
+    ) {
+        assert_eq!(calculate_nth_element_arithmetic(a1, r, n), expected_result);
+    }
+
+    #[rstest]
+    #[case(1.0, 2.0, 2, 2.0)]
+    #[case(3.0, 3.0, 3, 27.0)]
+    fn test_calculate_nth_element_geometric(
+        #[case] a1: f32,
+        #[case] r: f32,
+        #[case] n: u32,
+        #[case] expected_result: f32,
+    ) {
+        assert_eq!(calculate_nth_element_geometric(a1, r, n), expected_result);
+    }
+
+    #[test]
+    fn test_calculate_nth_element_geometric_return_nan_when_zeroes_provided() {
+        assert!(calculate_nth_element_geometric(0.0, 0.0, 0).is_nan());
+    }
 }

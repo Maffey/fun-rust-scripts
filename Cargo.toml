@@ -8,3 +8,6 @@ authors = ["Mateusz Kuniczuk"]
 
 [dependencies]
 clap = { version = "4.4.6", features = ["derive"] }
+
+[dev-dependencies]
+rstest = "0.18.2"
