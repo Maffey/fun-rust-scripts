@@ -1,8 +1,16 @@
 [package]
 name = "fun-rust-scripts"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["Mateusz Kuniczuk"]
+rust-version = "1.73"
+description = "Rewriting fun-python-scripts in Rust to practice."
+readme = "README.md"
+homepage = "https://www.linkedin.com/in/mkuniczuk/"
+repository = "https://github.com/Maffey/fun-rust-scripts"
+license = "MIT"
+license-file = "LICENSE"
+keywords = ["learning", "cli", "scripts", "random"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
