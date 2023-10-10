@@ -9,7 +9,6 @@ readme = "README.md"
 homepage = "https://www.linkedin.com/in/mkuniczuk/"
 repository = "https://github.com/Maffey/fun-rust-scripts"
 license = "MIT"
-license-file = "LICENSE"
 keywords = ["learning", "cli", "scripts", "random"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
