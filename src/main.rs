@@ -31,11 +31,11 @@ struct Arguments {
     program: String,
 }
 
-fn parse_arguments() {
+fn parse_argument() -> Program {
     let args = Arguments::parse();
     let program = Program::from_str(&args.program)
         .expect("Error. Program not recognized. Check help for more details.");
-    run_program(&program);
+    program
 }
 
 fn run_program(program: &Program) {
@@ -46,5 +46,6 @@ fn run_program(program: &Program) {
 }
 
 fn main() {
-    parse_arguments();
+    let program: Program = parse_argument();
+    run_program(&program);
 }
