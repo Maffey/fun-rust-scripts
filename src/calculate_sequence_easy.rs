@@ -1,10 +1,9 @@
+use crate::utilities::{get_parsed_user_input, INPUT_READ_ERROR};
 use std::io;
 use std::process::exit;
 use std::str::FromStr;
 
 const ELEMENT_OF_SEQUENCE_PROMPT: &str = "Which element of the sequence do you want to calculate?";
-const INPUT_READ_ERROR: &str = "Failed to read line!";
-const NOT_A_NUMBER_ERORR: &str = "Not a number. Try again.";
 const PRESENT_RESULT: &str = "Here you go! The result is: ";
 const ARITHMETIC_OPTION: &str = "ari";
 const GEOMETRIC_OPTION: &str = "geo";
@@ -74,26 +73,6 @@ fn process_geometric_sequence(a1: f32, difference: f32, n: u32) {
     println!("Standard formula: An = {a1} * {difference}^(n-1)");
     let result: f32 = calculate_nth_element_geometric(a1, difference, n);
     println!("{PRESENT_RESULT}{result}")
-}
-
-fn get_parsed_user_input<T: FromStr>(input_prompt: &str) -> T {
-    loop {
-        println!("{input_prompt}");
-        let mut variable: String = String::new();
-
-        io::stdin()
-            .read_line(&mut variable)
-            .expect(INPUT_READ_ERROR);
-
-        let variable: T = match variable.trim().parse() {
-            Ok(number) => number,
-            Err(_) => {
-                println!("{NOT_A_NUMBER_ERORR}");
-                continue;
-            }
-        };
-        return variable;
-    }
 }
 
 fn calculate_nth_element_arithmetic(a1: f32, r: f32, n: u32) -> f32 {

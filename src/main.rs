@@ -4,9 +4,12 @@ use crate::throughput::run_throughput_converter;
 use clap::Parser;
 use std::str::FromStr;
 
+// TODO move programs to folder
+
 mod calculate_sequence_easy;
 mod text_game_rpg;
 mod throughput;
+mod utilities;
 
 // TODO show user programs that can be run.
 
@@ -59,6 +62,7 @@ fn run_program(program: &Program) {
 }
 
 fn main() {
+    env_logger::init();
     let program: Program = parse_argument();
     run_program(&program);
 }
