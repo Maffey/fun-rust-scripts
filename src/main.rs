@@ -1,9 +1,11 @@
 use crate::calculate_sequence_easy::run_calculate_sequence_easy;
+use crate::text_game_rpg::run_rpg_game;
 use crate::throughput::run_throughput_converter;
 use clap::Parser;
 use std::str::FromStr;
 
 mod calculate_sequence_easy;
+mod text_game_rpg;
 mod throughput;
 
 // TODO show user programs that can be run.
@@ -13,6 +15,7 @@ enum Program {
     // TODO: Implement Display instead of debug.
     CalculateSequenceEasy,
     Throughput,
+    TextRpgGame,
 }
 
 impl FromStr for Program {
@@ -24,6 +27,8 @@ impl FromStr for Program {
             "calculate-sequence-easy" => Ok(Program::CalculateSequenceEasy),
             "cse" => Ok(Program::CalculateSequenceEasy),
             "throughput" => Ok(Program::Throughput),
+            "text_rpg_game" => Ok(Program::TextRpgGame),
+            "rpg" => Ok(Program::TextRpgGame),
             _ => Err(()),
         }
     }
@@ -49,6 +54,7 @@ fn run_program(program: &Program) {
     match &program {
         Program::CalculateSequenceEasy => run_calculate_sequence_easy(),
         Program::Throughput => run_throughput_converter(),
+        Program::TextRpgGame => run_rpg_game(),
     }
 }
 
