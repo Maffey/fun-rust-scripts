@@ -4,7 +4,7 @@ use std::str::FromStr;
 use std::{fmt, io};
 
 #[derive(Debug)]
-struct Player {
+struct Character {
     health: i32,
     level: u32,
     strength: i32,
@@ -12,7 +12,17 @@ struct Player {
     intelligence: i32,
 }
 
-impl Player {
+impl Character {
+    fn new() -> Character {
+        Character {
+            health: 100,
+            level: 1,
+            strength: 1,
+            agility: 1,
+            intelligence: 1,
+        }
+    }
+
     fn level_up(&mut self, attribute: &Attribute) {
         self.level = self.level + 1;
         match attribute {
@@ -23,7 +33,7 @@ impl Player {
     }
 }
 
-impl fmt::Display for Player {
+impl fmt::Display for Character {
     // This trait requires `fmt` with this exact signature.
     fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
         write!(
@@ -36,6 +46,22 @@ impl fmt::Display for Player {
                Intelligence: {}",
             self.health, self.level, self.strength, self.agility, self.intelligence
         )
+    }
+}
+
+struct AttributeModifier {
+    strength: i32,
+    agility: i32,
+    intelligence: i32,
+}
+
+impl AttributeModifier {
+    fn default() -> AttributeModifier {
+        AttributeModifier {
+            strength: 1,
+            agility: 1,
+            intelligence: 1,
+        }
     }
 }
 
@@ -62,45 +88,12 @@ impl FromStr for Attribute {
     }
 }
 
-struct Enemy {
-    health: i32,
-    damage: i32,
-}
 pub fn run_rpg_game() {
-    let player: Player = create_character();
+    let player: Character = create_player_character();
 }
 
-//def start_stats(func):
-//     while True:
-//         stat = input("Choose your " + str(func()) + ". attribute to increase.")
-//         global vit
-//         global agi
-//         global wis
-//         global n
-//         if stat == "str":
-//             vit += 1
-//             print("One point was added to strength. \n")
-//             return vit
-//         elif stat == "agi":
-//             agi += 1
-//             print("One point was added to agility. \n")
-//             return agi
-//         elif stat == "int":
-//             wis += 1
-//             print("One point was added to intelligence. \n")
-//             return wis
-//         else:
-//             print("Uups, something went wrong. Try again.")
-//             n -= 1
-
-fn create_character() -> Player {
-    let mut player = Player {
-        health: 100,
-        level: 1,
-        strength: 1,
-        agility: 1,
-        intelligence: 1,
-    };
+fn create_player_character() -> Character {
+    let mut player = Character::new();
 
     for _ in 0..5 {
         level_up_player(&mut player);
@@ -111,21 +104,61 @@ fn create_character() -> Player {
     player
 }
 
-fn level_up_player(player: &mut Player) {
-    println!("Select attribute to level up:");
-    let mut attribute: String = String::new();
-    io::stdin()
-        .read_line(&mut attribute)
-        .expect(INPUT_READ_ERROR);
+fn level_up_player(player: &mut Character) {
+    loop {
+        println!("Select attribute to level up:");
+        let mut attribute: String = String::new();
+        io::stdin()
+            .read_line(&mut attribute)
+            .expect(INPUT_READ_ERROR);
 
-    let attribute: Attribute = match attribute.trim().parse() {
-        Ok(attribute) => attribute,
-        Err(_) => {
-            println!("Not a correct attribute!");
-            panic!()
-        }
-    };
+        let attribute: Attribute = match attribute.trim().parse() {
+            Ok(attribute) => attribute,
+            Err(_) => {
+                println!("Not a correct attribute! Try again.");
+                continue;
+            }
+        };
 
-    player.level_up(&attribute);
-    info!("Leveled up {:?}", &attribute)
+        player.level_up(&attribute);
+        info!("Leveled up {:?}", &attribute);
+        break;
+    }
+}
+
+fn fight(player: &mut Character, enemy: &mut Character, attributes_modifier: &AttributeModifier) {
+    //     def fight(a, b, c):
+    //     while True:
+    //         option = input("What you want to do? Type 'a', 'b' or 'c'.")
+    //         if option == "a":
+    //             enemy_hp -= (vit * 10 * a)
+    //             print("Your hit causes the enemy's health to drop to " + str(enemy_hp) + " points!")
+    //             return enemy_hp
+    //
+    //         elif option == "b":
+    //             enemy_hp -= (agi * 10 * b)
+    //             print("Your hit causes the enemy's health to drop to " + str(enemy_hp) + " points!")
+    //             return enemy_hp
+    //
+    //         elif option == "c":
+    //             enemy_hp -= (wis * 10 * c)
+    //             print("Your hit causes the enemy's health to drop to " + str(enemy_hp) + " points!")
+    //             return enemy_hp
+    //
+    //         else:
+    //             print("Uups, something went wrong. Try again.")
+    loop {
+        println!("What do you want to do? Type 'a', 'b' or 'c'.");
+        let mut choice: String = String::new();
+        io::stdin().read_line(&mut choice).expect(INPUT_READ_ERROR);
+
+        match choice.as_str() {
+            // TODO implement this
+            "a" => choice,
+            _ => {
+                println!("Not a correct choice! Try again.");
+                continue;
+            }
+        };
+    }
 }
