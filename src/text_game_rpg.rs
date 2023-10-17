@@ -1,7 +1,7 @@
 use crate::utilities::{get_parsed_user_input, INPUT_READ_ERROR};
 use log::info;
-use std::io;
 use std::str::FromStr;
+use std::{fmt, io};
 
 #[derive(Debug)]
 struct Player {
@@ -20,6 +20,22 @@ impl Player {
             Attribute::Agility => self.agility = self.agility + 1,
             Attribute::Intelligence => self.intelligence = self.intelligence + 1,
         }
+    }
+}
+
+impl fmt::Display for Player {
+    // This trait requires `fmt` with this exact signature.
+    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            formatter,
+            "Character details:\n\t\
+               HP: {}\n\t\
+               LVL: {}\n\t\
+               Strength: {}\n\t\
+               Agility: {}\n\t\
+               Intelligence: {}",
+            self.health, self.level, self.strength, self.agility, self.intelligence
+        )
     }
 }
 
@@ -91,6 +107,7 @@ fn create_character() -> Player {
     }
 
     info!("Created player: {player:?}");
+    println!("{player}");
     player
 }
 
