@@ -1,11 +1,13 @@
-use crate::utilities::{get_parsed_user_input, INPUT_READ_ERROR};
+use crate::utilities::INPUT_READ_ERROR;
 use log::info;
 use std::str::FromStr;
 use std::{fmt, io};
 
+const STARTING_PLAYER_LEVEL: u32 = 3;
+
 #[derive(Debug)]
 struct Character {
-    health: i32,
+    health: f32,
     level: u32,
     strength: i32,
     agility: i32,
@@ -15,7 +17,7 @@ struct Character {
 impl Character {
     fn new() -> Character {
         Character {
-            health: 100,
+            health: 100.0,
             level: 1,
             strength: 1,
             agility: 1,
@@ -30,6 +32,11 @@ impl Character {
             Attribute::Agility => self.agility = self.agility + 1,
             Attribute::Intelligence => self.intelligence = self.intelligence + 1,
         }
+    }
+
+    fn deal_damage(&mut self, damage: f32) {
+        self.health = self.health - damage;
+        println!("{damage} was dealt. Character is at {} HP.", self.health);
     }
 }
 
@@ -50,17 +57,17 @@ impl fmt::Display for Character {
 }
 
 struct AttributeModifier {
-    strength: i32,
-    agility: i32,
-    intelligence: i32,
+    strength: f32,
+    agility: f32,
+    intelligence: f32,
 }
 
 impl AttributeModifier {
     fn default() -> AttributeModifier {
         AttributeModifier {
-            strength: 1,
-            agility: 1,
-            intelligence: 1,
+            strength: 1.0,
+            agility: 1.0,
+            intelligence: 1.0,
         }
     }
 }
@@ -89,13 +96,21 @@ impl FromStr for Attribute {
 }
 
 pub fn run_rpg_game() {
-    let player: Character = create_player_character();
+    // TODO this for testing for now, add proper flow later.
+    let mut player: Character = create_player_character();
+    let mut enemy: Character = Character::new();
+    let simple_modifier = AttributeModifier::default();
+    enemy.health = 50.0;
+
+    attack_enemy(&mut player, &mut enemy, &simple_modifier);
+    info!("{player:?}");
+    info!("{enemy:?}");
 }
 
 fn create_player_character() -> Character {
     let mut player = Character::new();
 
-    for _ in 0..5 {
+    for _ in 0..STARTING_PLAYER_LEVEL {
         level_up_player(&mut player);
     }
 
@@ -126,7 +141,11 @@ fn level_up_player(player: &mut Character) {
     }
 }
 
-fn fight(player: &mut Character, enemy: &mut Character, attributes_modifier: &AttributeModifier) {
+fn attack_enemy(
+    player: &mut Character,
+    enemy: &mut Character,
+    attributes_modifier: &AttributeModifier,
+) {
     //     def fight(a, b, c):
     //     while True:
     //         option = input("What you want to do? Type 'a', 'b' or 'c'.")
@@ -152,13 +171,31 @@ fn fight(player: &mut Character, enemy: &mut Character, attributes_modifier: &At
         let mut choice: String = String::new();
         io::stdin().read_line(&mut choice).expect(INPUT_READ_ERROR);
 
-        match choice.as_str() {
-            // TODO implement this
-            "a" => choice,
+        let damage_dealt: f32;
+
+        match choice.trim() {
+            "a" => {
+                damage_dealt = (player.strength / enemy.strength) as f32
+                    * (player.level / enemy.level) as f32
+                    * attributes_modifier.strength
+            }
+            "b" => {
+                damage_dealt = (player.agility / enemy.agility) as f32
+                    * (player.level / enemy.level) as f32
+                    * attributes_modifier.agility
+            }
+            "c" => {
+                damage_dealt = (player.intelligence / enemy.intelligence) as f32
+                    * (player.level / enemy.level) as f32
+                    * attributes_modifier.intelligence
+            }
             _ => {
                 println!("Not a correct choice! Try again.");
                 continue;
             }
         };
+
+        enemy.deal_damage(damage_dealt);
+        break;
     }
 }
