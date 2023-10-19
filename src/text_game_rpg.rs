@@ -1,5 +1,7 @@
 use crate::utilities::INPUT_READ_ERROR;
 use log::info;
+use rand::Rng;
+use std::process::exit;
 use std::str::FromStr;
 use std::{fmt, io};
 
@@ -36,7 +38,14 @@ impl Character {
 
     fn deal_damage(&mut self, damage: f32) {
         self.health = self.health - damage;
-        println!("{damage} was dealt. Character is at {} HP.", self.health);
+        println!(
+            "{damage:.2} damage was dealt. Character is at {:.2} HP.",
+            self.health
+        );
+    }
+
+    fn is_dead(&self) -> bool {
+        self.health <= 0.0
     }
 }
 
@@ -95,18 +104,6 @@ impl FromStr for Attribute {
     }
 }
 
-pub fn run_rpg_game() {
-    // TODO this for testing for now, add proper flow later.
-    let mut player: Character = create_player_character();
-    let mut enemy: Character = Character::new();
-    let simple_modifier = AttributeModifier::default();
-    enemy.health = 50.0;
-
-    attack_enemy(&mut player, &mut enemy, &simple_modifier);
-    info!("{player:?}");
-    info!("{enemy:?}");
-}
-
 fn create_player_character() -> Character {
     let mut player = Character::new();
 
@@ -141,52 +138,32 @@ fn level_up_player(player: &mut Character) {
     }
 }
 
-fn attack_enemy(
-    player: &mut Character,
+fn player_attack(
+    player: &Character,
     enemy: &mut Character,
     attributes_modifier: &AttributeModifier,
 ) {
-    //     def fight(a, b, c):
-    //     while True:
-    //         option = input("What you want to do? Type 'a', 'b' or 'c'.")
-    //         if option == "a":
-    //             enemy_hp -= (vit * 10 * a)
-    //             print("Your hit causes the enemy's health to drop to " + str(enemy_hp) + " points!")
-    //             return enemy_hp
-    //
-    //         elif option == "b":
-    //             enemy_hp -= (agi * 10 * b)
-    //             print("Your hit causes the enemy's health to drop to " + str(enemy_hp) + " points!")
-    //             return enemy_hp
-    //
-    //         elif option == "c":
-    //             enemy_hp -= (wis * 10 * c)
-    //             print("Your hit causes the enemy's health to drop to " + str(enemy_hp) + " points!")
-    //             return enemy_hp
-    //
-    //         else:
-    //             print("Uups, something went wrong. Try again.")
     loop {
         println!("What do you want to do? Type 'a', 'b' or 'c'.");
         let mut choice: String = String::new();
         io::stdin().read_line(&mut choice).expect(INPUT_READ_ERROR);
 
-        let damage_dealt: f32;
+        let damage: f32;
 
         match choice.trim() {
             "a" => {
-                damage_dealt = (player.strength / enemy.strength) as f32
-                    * (player.level / enemy.level) as f32
+                damage = (player.strength as f32 / enemy.strength as f32)
+                    * (player.level as f32 / enemy.level as f32)
                     * attributes_modifier.strength
             }
             "b" => {
-                damage_dealt = (player.agility / enemy.agility) as f32
-                    * (player.level / enemy.level) as f32
+                damage = (player.agility as f32 / enemy.agility as f32)
+                    * (player.level as f32 / enemy.level as f32)
                     * attributes_modifier.agility
             }
             "c" => {
-                damage_dealt = (player.intelligence / enemy.intelligence) as f32
-                    * (player.level / enemy.level) as f32
+                damage = (player.intelligence as f32 / enemy.intelligence as f32)
+                    * (player.level as f32 / enemy.level as f32)
                     * attributes_modifier.intelligence
             }
             _ => {
@@ -195,7 +172,39 @@ fn attack_enemy(
             }
         };
 
-        enemy.deal_damage(damage_dealt);
+        enemy.deal_damage(damage);
         break;
     }
+}
+
+fn simple_enemy_attack(enemy: &Character, player: &mut Character) {
+    println!("The enemy attacks you!");
+    let mut rng = rand::thread_rng();
+    let damage: f32 = rng.gen_range(5.0..20.0) * (enemy.level as f32 / player.level as f32);
+    player.deal_damage(damage);
+}
+
+fn fight(player: &mut Character, enemy: &mut Character, attribute_modifier: &AttributeModifier) {
+    loop {
+        player_attack(player, enemy, &attribute_modifier);
+        if enemy.is_dead() {
+            println!("The enemy has been defeated. You've won the fight!");
+            break;
+        }
+        simple_enemy_attack(&enemy, player);
+        if player.is_dead() {
+            println!("You've died!");
+            exit(0);
+        }
+    }
+}
+
+pub fn run_rpg_game() {
+    // TODO this for testing for now, add proper flow later.
+    let mut player: Character = create_player_character();
+    let mut enemy: Character = Character::new();
+    let simple_modifier = AttributeModifier::default();
+    enemy.health = 50.0;
+
+    fight(&mut player, &mut enemy, &simple_modifier);
 }
