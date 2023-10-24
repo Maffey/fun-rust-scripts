@@ -1,6 +1,7 @@
 use crate::utilities::INPUT_READ_ERROR;
 use log::info;
 use rand::Rng;
+use std::ops::Range;
 use std::process::exit;
 use std::str::FromStr;
 use std::{fmt, io};
@@ -69,16 +70,6 @@ struct AttributeModifier {
     strength: f32,
     agility: f32,
     intelligence: f32,
-}
-
-impl AttributeModifier {
-    fn default() -> AttributeModifier {
-        AttributeModifier {
-            strength: 1.0,
-            agility: 1.0,
-            intelligence: 1.0,
-        }
-    }
 }
 
 #[derive(Debug, PartialEq)]
@@ -177,21 +168,27 @@ fn player_attack(
     }
 }
 
-fn simple_enemy_attack(enemy: &Character, player: &mut Character) {
+fn simple_enemy_attack(enemy: &Character, player: &mut Character, damage_range: Range<f32>) {
     println!("The enemy attacks you!");
     let mut rng = rand::thread_rng();
-    let damage: f32 = rng.gen_range(5.0..20.0) * (enemy.level as f32 / player.level as f32);
+    let damage: f32 = rng.gen_range(damage_range) * (enemy.level as f32 / player.level as f32);
     player.deal_damage(damage);
 }
 
-fn fight(player: &mut Character, enemy: &mut Character, attribute_modifier: &AttributeModifier) {
+fn fight(
+    player: &mut Character,
+    enemy: &mut Character,
+    attribute_modifier: &AttributeModifier,
+    enemy_damage_range: Range<f32>,
+) {
     loop {
         player_attack(player, enemy, &attribute_modifier);
         if enemy.is_dead() {
-            println!("The enemy has been defeated. You've won the fight!");
+            println!("The enemy has been defeated. You've won the fight and got healed!");
+            player.health = 100.0;
             break;
         }
-        simple_enemy_attack(&enemy, player);
+        simple_enemy_attack(&enemy, player, enemy_damage_range.clone());
         if player.is_dead() {
             println!("You've died!");
             exit(0);
@@ -200,11 +197,32 @@ fn fight(player: &mut Character, enemy: &mut Character, attribute_modifier: &Att
 }
 
 pub fn run_rpg_game() {
-    // TODO this for testing for now, add proper flow later.
+    println!("\nWelcome, young warrior.\nYour mission is to defeat the enemies each day. \
+    You will do that by selecting the right choices. The attributes will also help you in fights. \
+    \nGood luck!\nYou have 100 hp, 1 strength, 1 agility and 1 intelligence point in the beginning. \
+    You will be able to increase those attributes later in the game.\n \
+    Let's start with selecting few attributes. By typing down 'str', 'agi' or 'int' and pressing ENTER. \
+    \n\nYou get {STARTING_PLAYER_LEVEL} points to spend for now.");
     let mut player: Character = create_player_character();
-    let mut enemy: Character = Character::new();
-    let simple_modifier = AttributeModifier::default();
-    enemy.health = 50.0;
+    println!("Now, after you created your character, it's time to begin the journey!\n\n
+    Day 1\nYou've just entered local tavern to find out about a fighting tournament that should start soon.
+     When you are asking people in the tavern about this, you get to meet some drunk asshole, who seems pretty stupid.
+     The guys is aggressive, even though you try to avoid the conflict.
+     You decide to test your skills on him, to warm up the muscles before great tournament.\n
+    What do you do?\n\
+    a) You hit him in the head with great amount of force.\n\
+    b)You attack rapidly from below.\n\
+    c) You take a bottle lying nearby and hit him with it in the head.\n");
 
-    fight(&mut player, &mut enemy, &simple_modifier);
+    let mut enemy: Character = Character::new();
+    let first_fight_modifier = AttributeModifier {
+        strength: 1.5,
+        agility: 1.7,
+        intelligence: 1.9,
+    };
+    enemy.health = 50.0;
+    fight(&mut player, &mut enemy, &first_fight_modifier, 10.0..20.0);
+    println!("Your attributes were increased!\n");
+    level_up_player(&mut player);
+    println!("Player: {player}\nEnemy: {enemy}")
 }

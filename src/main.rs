@@ -1,13 +1,13 @@
 use crate::calculate_sequence_easy::run_calculate_sequence_easy;
-use crate::text_game_rpg::run_rpg_game;
+use crate::text_rpg_game::run_rpg_game;
 use crate::throughput::run_throughput_converter;
 use clap::Parser;
 use std::str::FromStr;
 
-// TODO move programs to folder
+// TODO move programs to separate directory
 
 mod calculate_sequence_easy;
-mod text_game_rpg;
+mod text_rpg_game;
 mod throughput;
 mod utilities;
 
