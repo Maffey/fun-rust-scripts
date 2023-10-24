@@ -4,6 +4,6 @@ Rewriting [fun-python-scripts](https://github.com/Maffey/fun-python-scripts) in 
 
 ## Changelog
 
-- `v0.1` - created the project.
-- `v0.2` - implemented **calculate_sequence_easy**
-- `v0.3` - imported **throughput** and implemented **text_rpg_game** 
+- `v0.1.0` - created the project.
+- `v0.2.0` - implemented **calculate_sequence_easy**
+- `v0.3.0` - imported **throughput** and implemented **text_rpg_game** 
