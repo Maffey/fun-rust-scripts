@@ -1,3 +1,4 @@
+use crate::ackermann_function::run_ackermann_function;
 use crate::calculate_sequence_easy::run_calculate_sequence_easy;
 use crate::text_rpg_game::run_rpg_game;
 use crate::throughput::run_throughput_converter;
@@ -6,6 +7,7 @@ use std::str::FromStr;
 
 // TODO move programs to separate directory
 
+mod ackermann_function;
 mod calculate_sequence_easy;
 mod text_rpg_game;
 mod throughput;
@@ -19,6 +21,7 @@ enum Program {
     CalculateSequenceEasy,
     Throughput,
     TextRpgGame,
+    AckermannFunction,
 }
 
 impl FromStr for Program {
@@ -32,6 +35,7 @@ impl FromStr for Program {
             "throughput" => Ok(Program::Throughput),
             "text_rpg_game" => Ok(Program::TextRpgGame),
             "rpg" => Ok(Program::TextRpgGame),
+            "ackermann" => Ok(Program::AckermannFunction),
             _ => Err(()),
         }
     }
@@ -58,6 +62,7 @@ fn run_program(program: &Program) {
         Program::CalculateSequenceEasy => run_calculate_sequence_easy(),
         Program::Throughput => run_throughput_converter(),
         Program::TextRpgGame => run_rpg_game(),
+        Program::AckermannFunction => run_ackermann_function(),
     }
 }
 
