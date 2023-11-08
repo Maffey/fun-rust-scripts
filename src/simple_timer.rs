@@ -27,6 +27,11 @@ fn beep_alarm() {
     }
 }
 
+#[cfg(not(target_os = "windows"))]
+fn beep_alarm() {
+    println!("Beep beep!");
+}
+
 fn print_clock(timer_duration: u32) {
     let seconds = timer_duration % 60;
     let minutes = (timer_duration / 60) % 60;
