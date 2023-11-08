@@ -1,5 +1,6 @@
 use crate::utilities::get_parsed_user_input;
 use std::{thread, time};
+#[cfg(target_os = "windows")]
 use winconsole::console;
 
 pub fn run_simple_timer() {
