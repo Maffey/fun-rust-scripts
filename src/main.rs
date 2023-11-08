@@ -1,5 +1,6 @@
 use crate::ackermann_function::run_ackermann_function;
 use crate::calculate_sequence_easy::run_calculate_sequence_easy;
+use crate::simple_timer::run_simple_timer;
 use crate::text_rpg_game::run_rpg_game;
 use crate::throughput::run_throughput_converter;
 use clap::Parser;
@@ -9,6 +10,7 @@ use std::str::FromStr;
 
 mod ackermann_function;
 mod calculate_sequence_easy;
+mod simple_timer;
 mod text_rpg_game;
 mod throughput;
 mod utilities;
@@ -22,6 +24,7 @@ enum Program {
     Throughput,
     TextRpgGame,
     AckermannFunction,
+    SimpleTimer,
 }
 
 impl FromStr for Program {
@@ -36,6 +39,7 @@ impl FromStr for Program {
             "text_rpg_game" => Ok(Program::TextRpgGame),
             "rpg" => Ok(Program::TextRpgGame),
             "ackermann" => Ok(Program::AckermannFunction),
+            "simple-timer" => Ok(Program::SimpleTimer),
             _ => Err(()),
         }
     }
@@ -63,6 +67,7 @@ fn run_program(program: &Program) {
         Program::Throughput => run_throughput_converter(),
         Program::TextRpgGame => run_rpg_game(),
         Program::AckermannFunction => run_ackermann_function(),
+        Program::SimpleTimer => run_simple_timer(),
     }
 }
 
