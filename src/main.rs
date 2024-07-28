@@ -9,6 +9,7 @@ use std::str::FromStr;
 // TODO move programs to separate directory
 
 mod ackermann_function;
+mod calculate_alcohol_percentage;
 mod calculate_sequence_easy;
 mod simple_timer;
 mod text_rpg_game;

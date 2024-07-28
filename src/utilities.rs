@@ -14,7 +14,7 @@ pub fn get_parsed_user_input<T: FromStr>(input_prompt: &str) -> T {
             .expect(INPUT_READ_ERROR);
 
         let variable: T = match variable.trim().parse() {
-            Ok(number) => number,
+            Ok(parsed_variable) => parsed_variable,
             Err(_) => {
                 println!("{NOT_A_NUMBER_ERORR}");
                 continue;
