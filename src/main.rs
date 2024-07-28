@@ -3,6 +3,7 @@ use crate::calculate_sequence_easy::run_calculate_sequence_easy;
 use crate::simple_timer::run_simple_timer;
 use crate::text_rpg_game::run_rpg_game;
 use crate::throughput::run_throughput_converter;
+use calculate_alcohol_percentage::run_calculate_alcohol_percentages;
 use clap::Parser;
 use std::str::FromStr;
 
@@ -21,6 +22,7 @@ mod utilities;
 #[derive(Debug, PartialEq)]
 enum Program {
     // TODO: Implement Display instead of debug.
+    CalculateAlcoholPercentage,
     CalculateSequenceEasy,
     Throughput,
     TextRpgGame,
@@ -33,9 +35,14 @@ impl FromStr for Program {
 
     fn from_str(input: &str) -> Result<Self, Self::Err> {
         match input {
+            "calculate_alcohol_percentage" => Ok(Program::CalculateAlcoholPercentage),
+            "calculate-alcohol-percentage" => Ok(Program::CalculateAlcoholPercentage),
+            "cap" => Ok(Program::CalculateAlcoholPercentage),
+
             "calculate_sequence_easy" => Ok(Program::CalculateSequenceEasy),
             "calculate-sequence-easy" => Ok(Program::CalculateSequenceEasy),
             "cse" => Ok(Program::CalculateSequenceEasy),
+
             "throughput" => Ok(Program::Throughput),
             "text_rpg_game" => Ok(Program::TextRpgGame),
             "rpg" => Ok(Program::TextRpgGame),
@@ -64,6 +71,7 @@ fn parse_argument() -> Program {
 fn run_program(program: &Program) {
     println!("Running {:?}...", &program);
     match &program {
+        Program::CalculateAlcoholPercentage => run_calculate_alcohol_percentages(),
         Program::CalculateSequenceEasy => run_calculate_sequence_easy(),
         Program::Throughput => run_throughput_converter(),
         Program::TextRpgGame => run_rpg_game(),
