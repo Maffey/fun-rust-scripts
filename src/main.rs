@@ -4,6 +4,7 @@ use crate::simple_timer::run_simple_timer;
 use crate::text_rpg_game::run_rpg_game;
 use crate::throughput::run_throughput_converter;
 use calculate_alcohol_percentage::run_calculate_alcohol_percentages;
+use prime_numbers_dumper::run_prime_numbers_dumper;
 use clap::Parser;
 use std::str::FromStr;
 
@@ -16,7 +17,7 @@ mod simple_timer;
 mod text_rpg_game;
 mod throughput;
 mod utilities;
-
+mod prime_numbers_dumper;
 // TODO show user programs that can be run.
 
 #[derive(Debug, PartialEq)]
@@ -28,6 +29,7 @@ enum Program {
     TextRpgGame,
     AckermannFunction,
     SimpleTimer,
+    PrimeNumbersDumper,
 }
 
 impl FromStr for Program {
@@ -48,6 +50,8 @@ impl FromStr for Program {
             "rpg" => Ok(Program::TextRpgGame),
             "ackermann" => Ok(Program::AckermannFunction),
             "simple-timer" => Ok(Program::SimpleTimer),
+            "prime-numbers-dumper" => Ok(Program::PrimeNumbersDumper),
+            "pnd" => Ok(Program::PrimeNumbersDumper),
             _ => Err(()),
         }
     }
@@ -64,7 +68,7 @@ struct Arguments {
 fn parse_argument() -> Program {
     let args = Arguments::parse();
     let program = Program::from_str(&args.program)
-        .expect("Error. Program not recognized. Check help for more details.");
+        .expect("Error. Program isn't recognized. Check help for more details.");
     program
 }
 
@@ -77,6 +81,7 @@ fn run_program(program: &Program) {
         Program::TextRpgGame => run_rpg_game(),
         Program::AckermannFunction => run_ackermann_function(),
         Program::SimpleTimer => run_simple_timer(),
+        Program::PrimeNumbersDumper => run_prime_numbers_dumper().expect("Don't fail mate!"),
     }
 }
 
