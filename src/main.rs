@@ -4,8 +4,8 @@ use crate::simple_timer::run_simple_timer;
 use crate::text_rpg_game::run_rpg_game;
 use crate::throughput::run_throughput_converter;
 use calculate_alcohol_percentage::run_calculate_alcohol_percentages;
-use prime_numbers_dumper::run_prime_numbers_dumper;
 use clap::Parser;
+use prime_numbers_dumper::run_prime_numbers_dumper;
 use std::str::FromStr;
 
 // TODO move programs to separate directory
@@ -13,11 +13,11 @@ use std::str::FromStr;
 mod ackermann_function;
 mod calculate_alcohol_percentage;
 mod calculate_sequence_easy;
+mod prime_numbers_dumper;
 mod simple_timer;
 mod text_rpg_game;
 mod throughput;
 mod utilities;
-mod prime_numbers_dumper;
 // TODO show user programs that can be run.
 
 #[derive(Debug, PartialEq)]
@@ -67,9 +67,8 @@ struct Arguments {
 
 fn parse_argument() -> Program {
     let args = Arguments::parse();
-    let program = Program::from_str(&args.program)
-        .expect("Error. Program isn't recognized. Check help for more details.");
-    program
+    Program::from_str(&args.program)
+        .expect("Error. Program isn't recognized. Check help for more details.")
 }
 
 fn run_program(program: &Program) {

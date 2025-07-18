@@ -29,16 +29,15 @@ impl Character {
     }
 
     fn level_up(&mut self, attribute: &Attribute) {
-        self.level = self.level + 1;
+        self.level += 1;
         match attribute {
-            Attribute::Strength => self.strength = self.strength + 1,
-            Attribute::Agility => self.agility = self.agility + 1,
-            Attribute::Intelligence => self.intelligence = self.intelligence + 1,
+            Attribute::Strength => self.strength += 1,
+            Attribute::Agility => self.agility += 1,
+            Attribute::Intelligence => self.intelligence += 1,
         }
     }
 
     fn deal_damage(&mut self, damage: f32) {
-        self.health = self.health - damage;
         println!(
             "{damage:.2} damage was dealt. Character is at {:.2} HP.",
             self.health
@@ -139,21 +138,19 @@ fn player_attack(
         let mut choice: String = String::new();
         io::stdin().read_line(&mut choice).expect(INPUT_READ_ERROR);
 
-        let damage: f32;
-
-        match choice.trim() {
+        let damage: f32 = match choice.trim() {
             "a" => {
-                damage = (player.strength as f32 / enemy.strength as f32)
+                (player.strength as f32 / enemy.strength as f32)
                     * (player.level as f32 / enemy.level as f32)
                     * attributes_modifier.strength
             }
             "b" => {
-                damage = (player.agility as f32 / enemy.agility as f32)
+                (player.agility as f32 / enemy.agility as f32)
                     * (player.level as f32 / enemy.level as f32)
                     * attributes_modifier.agility
             }
             "c" => {
-                damage = (player.intelligence as f32 / enemy.intelligence as f32)
+                (player.intelligence as f32 / enemy.intelligence as f32)
                     * (player.level as f32 / enemy.level as f32)
                     * attributes_modifier.intelligence
             }
@@ -170,8 +167,8 @@ fn player_attack(
 
 fn simple_enemy_attack(enemy: &Character, player: &mut Character, damage_range: Range<f32>) {
     println!("The enemy attacks you!");
-    let mut rng = rand::thread_rng();
-    let damage: f32 = rng.gen_range(damage_range) * (enemy.level as f32 / player.level as f32);
+    let mut rng = rand::rng();
+    let damage: f32 = rng.random_range(damage_range) * (enemy.level as f32 / player.level as f32);
     player.deal_damage(damage);
 }
 
@@ -182,13 +179,13 @@ fn fight(
     enemy_damage_range: Range<f32>,
 ) {
     loop {
-        player_attack(player, enemy, &attribute_modifier);
+        player_attack(player, enemy, attribute_modifier);
         if enemy.is_dead() {
             println!("The enemy has been defeated. You've won the fight and got healed!");
             player.health = 100.0;
             break;
         }
-        simple_enemy_attack(&enemy, player, enemy_damage_range.clone());
+        simple_enemy_attack(enemy, player, enemy_damage_range.clone());
         if player.is_dead() {
             println!("You've died!");
             exit(0);

@@ -1,9 +1,9 @@
 [package]
 name = "fun-rust-scripts"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Mateusz Kuniczuk"]
-rust-version = "1.72"
+rust-version = "1.88"
 description = "Rewriting fun-python-scripts in Rust to practice."
 readme = "README.md"
 homepage = "https://www.linkedin.com/in/mkuniczuk/"
@@ -14,13 +14,13 @@ keywords = ["learning", "cli", "scripts", "random"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-clap = { version = "4.4.6", features = ["derive"] }
-log = "0.4.20"
-env_logger = "0.10.0"
-rand = "0.8.5"
+clap = { version = "4.5.41", features = ["derive"] }
+log = "0.4.27"
+env_logger = "0.11.8"
+rand = "0.9.1"
 
 [target.'cfg(target_os = "windows")'.dependencies]
 winconsole = "0.11"
 
 [dev-dependencies]
-rstest = "0.18.2"
+rstest = "0.25.0"

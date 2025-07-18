@@ -12,7 +12,7 @@ pub fn run_simple_timer() {
         if timer_duration == 0 {
             break;
         }
-        timer_duration = timer_duration - 1;
+        timer_duration -= 1;
         thread::sleep(time::Duration::from_secs(1));
     }
 
